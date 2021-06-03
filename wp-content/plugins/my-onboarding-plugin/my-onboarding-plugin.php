@@ -28,4 +28,17 @@ add_filter('the_content', 'second_p_insertion', 7);
 function second_p_insertion($content) {
 	return $content . '</p>';
 }
+
+add_filter('wp_nav_menu_items', 'add_custom_element_in_nav');
+function add_custom_element_in_nav($nav) {
+	if (is_user_logged_in()) {
+		return $nav = '<a href="/testing/wp-admin/profile.php">Profile Settings</a>';
+	}
+}
+
+add_filter('profile_update', 'send_email_when_profile_is_updated');
+
+function send_email_when_profile_is_updated() {
+	var_dump(wp_mail('mariatomovich@gmail.com', 'Success', 'The plugin worked!'));
+}
 ?>
