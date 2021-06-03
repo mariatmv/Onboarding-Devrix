@@ -33,13 +33,33 @@ function second_p_insertion($content) {
 add_filter('wp_nav_menu_items', 'add_custom_element_in_nav');
 function add_custom_element_in_nav($nav) {
 	if (is_user_logged_in()) {
-		return $nav = '<a href="/testing/wp-admin/profile.php">Profile Settings</a>';
+		$settings_url= get_admin_url() . 'profile.php';
+		return $nav = "<a href='$settings_url'>Profile Settings</a>";
 	}
 }
 
 add_filter('profile_update', 'send_email_when_profile_is_updated');
 /** Sends an email to the site administrator every time someone updates their profile */
 function send_email_when_profile_is_updated() {
-	var_dump(wp_mail('mariatomovich@gmail.com', 'Success', 'The plugin worked!'));
+	var_dump(wp_mail(get_option('admin_email'), 'Success', 'The plugin worked!'));
 }
+/** Creates a submenu to the Settings administration menu */
+
+add_action( 'admin_menu', 'my_onboarding_menu' );
+
+function my_onboarding_menu() {
+	add_options_page( 'My Onboarding Options', 'My Onboarding', 'manage_options', 'my-unique-identifier', 'my_onboarding_options' );
+}
+
+function my_onboarding_options() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+	}
+	echo '<div class="wrap">';
+	echo '<br>';echo '<br>';echo '<br>';
+	echo '<input type="checkbox" id="checkbox" name="checkbox">';
+	echo '<label for="vehicle1"> Filters enabled</label><br>';
+	echo '</div>';
+}
+
 ?>
