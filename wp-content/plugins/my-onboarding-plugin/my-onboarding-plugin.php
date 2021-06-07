@@ -67,18 +67,18 @@ function my_onboarding_options() {
 
 <?php
 }
-add_action( 'admin_enqueue_scripts', 'my_enqueue' );
-function my_enqueue($hook) {
-	wp_enqueue_script( 'ajax-script', plugins_url( 'checkbox.js', __FILE__ ), array('jquery') );
+add_action( 'admin_enqueue_scripts', 'enqueue_filters_script' );
+function enqueue_filters_script() {
+	wp_enqueue_script( 'enabled_filters_script', plugins_url( 'checkbox.js', __FILE__ ), array('jquery') );
 
 	// in JavaScript, object properties are accessed as ajax_object.ajax_url, ajax_object.we_value
-	wp_localize_script( 'ajax-script', 'ajax_object',
-		array( 'ajax_url' => admin_url( 'admin-ajax.php' ), 'is_checked' => get_option('is_checked') ) );
+	wp_localize_script( 'enabled_filters_script', 'enabled_filters_object',
+		array( 'enabled_filters_url' => admin_url( 'admin-ajax.php' ), 'is_checked' => get_option('is_checked') ) );
 }
 
 // Same handler function...
-add_action( 'wp_ajax_my_action', 'my_action' );
-function my_action() {
+add_action( 'wp_ajax_enable_filters', 'enable_filters' );
+function enable_filters() {
 	global $wpdb;
 	$is_checked = $_POST['is_checked'];
 	update_option('is_checked', $is_checked);
