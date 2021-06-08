@@ -19,6 +19,12 @@ function amazon_search_options() {
 	?>
     <br><br><br>
     <input type="url" id="amazonUrl" name="amazonUrl">
+    <label for="duration">Choose duration (in seconds):</label>
+    <select id="transientDuration" name="duration">
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+    </select>
     <button id="searchUrlBtn">Search</button>
     <br>
     <div id="container"><?php echo cache_results_display(); ?></div>
@@ -37,7 +43,8 @@ function enqueue_amazon_search_script() {
 add_action( 'wp_ajax_amazon_search', 'amazon_search' );
 function amazon_search() {
 	$url = $_POST['data']['amazon_url'];
-	setting_url_transient($url);
+	$duration_in_seconds = $_POST['data']['transient_duration'];
+	setting_url_transient($url, $duration_in_seconds);
 	display_results();
 	wp_die();
 }
@@ -49,8 +56,8 @@ function cache_results_display() {
 	}
 }
 
-function setting_url_transient($url) {
-    set_transient('search_results', $url, HOUR_IN_SECONDS);
+function setting_url_transient($url, $duration_in_seconds) {
+    set_transient('search_results', $url, $duration_in_seconds);
 }
 
 function display_results() {
