@@ -4,6 +4,7 @@
  * Version: 1.0
  * Author: Maria Tomovich
  */
+
 if (get_option('is_checked') === 'checked') {
 	add_filter('the_content', 'onboarding_filter_message', 1);
 	/** Adds the returned message before the content of a post */
@@ -59,13 +60,13 @@ function my_onboarding_options() {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	} ?>
     <br><br><br>
-	<div>
-		<br><br><br>
-		    <input type="checkbox" id="filters_checkbox" name="checkbox" <?php echo get_option('is_checked') ?>>
-		    <label for="checkbox">Filters enabled</label>
-	</div>
+    <div>
+        <br><br><br>
+        <input type="checkbox" id="filters_checkbox" name="checkbox" <?php echo get_option('is_checked') ?>>
+        <label for="checkbox">Filters enabled</label>
+    </div>
 
-<?php
+	<?php
 }
 add_action( 'admin_enqueue_scripts', 'enqueue_filters_script' );
 function enqueue_filters_script() {
@@ -79,7 +80,6 @@ function enqueue_filters_script() {
 // Same handler function...
 add_action( 'wp_ajax_enable_filters', 'enable_filters' );
 function enable_filters() {
-	global $wpdb;
 	$is_checked = $_POST['is_checked'];
 	update_option('is_checked', $is_checked);
 	wp_die();
