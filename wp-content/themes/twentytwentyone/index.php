@@ -17,7 +17,7 @@
 get_header(); ?>
 <?php
 $args = array(
-	'post_type'      => 'post',
+//	'post_type'      => 'post',
 	'posts_per_page' => 2,
     'paged' => ( get_query_var('paged') ? get_query_var('paged') : 1),
 );
