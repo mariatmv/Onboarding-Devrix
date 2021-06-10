@@ -6,36 +6,43 @@
  */
 
 if (get_option('is_checked') === 'checked') {
-	add_filter('the_content', 'onboarding_filter_message', 1);
-	/** Adds the returned message before the content of a post */
-	function onboarding_filter_message( $content) {
-		return 'Onboarding filter: by Maria Tomovich' . $content;
-	}
+    add_action('the_post', 'wrapper');
+    function wrapper($the_post) {
+        if ($the_post->post_type === 'students') {
+	        add_filter('the_excerpt', 'onboarding_filter_message', 1);
+	        /** Adds the returned message before the content of a post */
+	        function onboarding_filter_message( $excerpt) {
+		        return 'Onboarding filter: by Maria Tomovich' . '<br>' . $excerpt;
+	        }
 
-	add_filter('the_content', 'div_insertion', 6);
-	/** Inserts a div element after the past p element */
-	function div_insertion($content) {
-		return $content . '<div style="display: none"></div>';
-	}
+//	        add_filter('the_content', 'div_insertion', 6);
+//	        /** Inserts a div element after the past p element */
+//	        function div_insertion($content) {
+//		        return $content . '<div style="display: none"></div>';
+//	        }
+//
+//	        add_filter('the_content', 'p_insertion', 5);
+//	        /** The following two functions pack the div elements into a paragraph */
+//	        function p_insertion($content) {
+//		        return $content .= '<p id="1">';
+//	        }
+//
+//	        add_filter('the_content', 'second_p_insertion', 7);
+//
+//	        function second_p_insertion($content) {
+//		        return $content .= '</p>';
+//	        }
+        }
 
-	add_filter('the_content', 'p_insertion', 5);
-	/** The following two functions pack the div elements into a paragraph */
-	function p_insertion($content) {
-		return $content .= '<p id="1">';
-	}
+    }
 
-	add_filter('the_content', 'second_p_insertion', 7);
-
-	function second_p_insertion($content) {
-		return $content .= '</p>';
-	}
 
 	/** Adds a custom element in the nav menu which redirects to the profile settings */
 	add_filter('wp_nav_menu_items', 'add_custom_element_in_nav');
 	function add_custom_element_in_nav($nav) {
 		if (is_user_logged_in()) {
 			$settings_url= get_admin_url() . 'profile.php';
-			return $nav = "<a href='$settings_url'>Profile Settings</a>";
+			return $nav .= "<a href='$settings_url'>Profile Settings</a>";
 		}
 	}
 
