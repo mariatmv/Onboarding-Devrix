@@ -21,5 +21,7 @@ while ( have_posts() ) :
 		comments_template();
 	}
 endwhile; // End of the loop.
-
+get_sidebar('Students Sidebar');
+//dynamic_sidebar('students-sidebar');
 get_footer();
+

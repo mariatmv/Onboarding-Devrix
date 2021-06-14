@@ -6,35 +6,29 @@
  */
 
 if (get_option('is_checked') === 'checked') {
-    add_action('the_post', 'wrapper');
-    function wrapper($the_post) {
-        if ($the_post->post_type === 'students') {
+//    add_action('the_post', 'wrapper');
+//    function wrapper($the_post) {
+//        if ($the_post->post_type === 'students') {
 	        add_filter('the_excerpt', 'onboarding_filter_message', 1);
 	        /** Adds the returned message before the content of a post */
-	        function onboarding_filter_message( $excerpt) {
-		        return 'Onboarding filter: by Maria Tomovich' . '<br>' . $excerpt;
+	        function onboarding_filter_message( $the_excerpt) {
+		        return 'Onboarding filter: by Maria Tomovich' . '<br>' . $the_excerpt;
 	        }
 
-//	        add_filter('the_content', 'div_insertion', 6);
-//	        /** Inserts a div element after the past p element */
-//	        function div_insertion($content) {
-//		        return $content . '<div style="display: none"></div>';
-//	        }
-//
-//	        add_filter('the_content', 'p_insertion', 5);
-//	        /** The following two functions pack the div elements into a paragraph */
-//	        function p_insertion($content) {
-//		        return $content .= '<p id="1">';
-//	        }
-//
-//	        add_filter('the_content', 'second_p_insertion', 7);
-//
-//	        function second_p_insertion($content) {
-//		        return $content .= '</p>';
-//	        }
-        }
+	        add_filter('the_content', 'div_insertion', 6);
+	        /** Inserts a div element after the past p element */
+	        function div_insertion($content) {
+		        return preg_replace( '</p>', '/p><div style="display:none">Hello</div', $content, 1 );
+	        }
 
-    }
+	        add_filter('the_content', 'p_insertion', 5);
+	        /** The following two functions pack the div elements into a paragraph */
+	        function p_insertion($content) {
+		        return preg_replace( '<p>', 'p>This Paragraph was added programmatically.</p><p', $content, 1 );
+	        }
+//        }
+
+//    }
 
 
 	/** Adds a custom element in the nav menu which redirects to the profile settings */

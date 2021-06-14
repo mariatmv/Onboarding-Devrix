@@ -22,7 +22,8 @@ if ( $the_query->have_posts() ) :
             </article>
         <?php
         endif;
-    endwhile; ?>
+    endwhile;
+	?>
 	<?php echo paginate_links();?>
 <?php endif; ?>
 <?php get_footer() ?>

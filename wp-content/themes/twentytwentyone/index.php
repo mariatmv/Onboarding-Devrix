@@ -35,4 +35,6 @@ if ( $the_query->have_posts() ) :
 	<?php endwhile; ?>
 	<?php echo paginate_links();?>
 <?php endif; ?>
-<?php get_footer() ?>
+<?php
+get_sidebar('Students Sidebar');
+get_footer() ?>
