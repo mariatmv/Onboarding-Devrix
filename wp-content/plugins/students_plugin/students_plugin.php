@@ -5,8 +5,8 @@
  * Author: Maria Tomovich
  */
 
-//include plugin_dir_path( __FILE__ ) . 'students-sidebar.php';
-
+//include plugin_dir_path( __FILE__ ) . '/students-rest-api.php';
+include substr(plugin_dir_path(__FILE__), 0, -1).'\\students-rest-api.php';
 /*
 * Creating a function to create our CPT
 */
@@ -475,4 +475,5 @@ function display_students_sidebar( $the_content ) {
 	}
 	return $the_content;
 }
+
 ?>
