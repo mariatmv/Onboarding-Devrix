@@ -5,64 +5,75 @@
  * Author: Maria Tomovich
  */
 
-if (get_option('is_checked') === 'checked') {
-//    add_action('the_post', 'wrapper');
-//    function wrapper($the_post) {
-//        if ($the_post->post_type === 'students') {
-	        add_filter('the_excerpt', 'onboarding_filter_message', 1);
-	        /** Adds the returned message before the content of a post */
-	        function onboarding_filter_message( $the_excerpt) {
-		        return 'Onboarding filter: by Maria Tomovich' . '<br>' . $the_excerpt;
-	        }
-
-	        add_filter('the_content', 'div_insertion', 6);
-	        /** Inserts a div element after the past p element */
-	        function div_insertion($content) {
-		        return preg_replace( '</p>', '/p><div style="display:none">Hello</div', $content, 1 );
-	        }
-
-	        add_filter('the_content', 'p_insertion', 5);
-	        /** The following two functions pack the div elements into a paragraph */
-	        function p_insertion($content) {
-		        return preg_replace( '<p>', 'p>This Paragraph was added programmatically.</p><p', $content, 1 );
-	        }
-//        }
-
-//    }
-
-
-	/** Adds a custom element in the nav menu which redirects to the profile settings */
-	add_filter('wp_nav_menu_items', 'add_custom_element_in_nav');
-	function add_custom_element_in_nav($nav) {
-		if (is_user_logged_in()) {
-			$settings_url= get_admin_url() . 'profile.php';
-			return $nav .= "<a href='$settings_url'>Profile Settings</a>";
-		}
-	}
-
-	add_filter('profile_update', 'send_email_when_profile_is_updated');
-	/** Sends an email to the site administrator every time someone updates their profile */
-	function send_email_when_profile_is_updated() {
-		var_dump(wp_mail(get_option('admin_email'), 'Success', 'The plugin worked!'));
-	}
-
+/**
+ * Checks if the filters in the admin menu are enabled
+ * @return bool
+ */
+function filters_enabled() {
+    return get_option('is_checked') === 'checked';
 }
+
+add_filter( 'the_excerpt', 'onboarding_filter_message', 1 );
+/** Adds the returned message before the content of a post */
+function onboarding_filter_message( $the_excerpt) {
+    if ( filters_enabled() ) {
+	    return 'Onboarding filter: by Maria Tomovich' . '<br>' . $the_excerpt;
+    }
+}
+
+add_filter('the_content', 'div_insertion', 6);
+/** Inserts a div element after the past p element */
+function div_insertion($content) {
+    if ( filters_enabled() ) {
+	    return preg_replace( '</p>', '/p><div style="display:none">Hello</div', $content, 1 );
+    }
+}
+
+add_filter('the_content', 'p_insertion', 5);
+/** The following two functions pack the div elements into a paragraph */
+function p_insertion($content) {
+    if ( filters_enabled() ) {
+	    return preg_replace( '<p>', 'p>This Paragraph was added programmatically.</p><p', $content, 1 );
+    }
+}
+
+
+/** Adds a custom element in the nav menu which redirects to the profile settings */
+add_filter('wp_nav_menu_items', 'add_custom_element_in_nav');
+function add_custom_element_in_nav($nav) {
+    if ( filters_enabled() ) {
+	    if (is_user_logged_in()) {
+		    $settings_url= get_admin_url() . 'profile.php';
+		    return $nav .= "<a href='$settings_url'>Profile Settings</a>";
+	    }
+    }
+}
+
+add_filter('profile_update', 'send_email_when_profile_is_updated');
+/** Sends an email to the site administrator every time someone updates their profile */
+function send_email_when_profile_is_updated() {
+    if ( filters_enabled() ) {
+	    wp_mail(get_option('admin_email'), 'Success', 'The plugin worked!');
+    }
+}
+
 
 /** Creates a submenu to the Settings administration menu */
 
 add_action( 'admin_menu', 'my_onboarding_menu' );
 
 function my_onboarding_menu() {
-	add_options_page( 'My Onboarding Options', 'My Onboarding', 'manage_options', 'my-unique-identifier', 'my_onboarding_options' );
+	add_options_page(
+	        'My Onboarding Options',
+            'My Onboarding',
+            'manage_options', 'my-unique-identifier', 'my_onboarding_options' );
 }
 
 function my_onboarding_options() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	} ?>
-    <br><br><br>
     <div>
-        <br><br><br>
         <input type="checkbox" id="filters_checkbox" name="checkbox" <?php echo get_option('is_checked') ?>>
         <label for="checkbox">Filters enabled</label>
     </div>

@@ -32,7 +32,8 @@ if ( $the_query->have_posts() ) :
             <p><?php the_content(); ?></p>
             <small style="text-decoration: underline"><?php the_time('Y jS M'); ?></small>
         </article>
-	<?php endwhile; ?>
+	<?php endwhile;
+	?>
 	<?php echo paginate_links();?>
 <?php endif; ?>
 <?php
