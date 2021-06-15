@@ -1,6 +1,7 @@
 <?php
-/** Registering rest route to get all the students */
-add_action('rest_api_init', 'register_route_to_get_all_students');
+/**
+ * Registering rest route to get all the students
+ */
 function register_route_to_get_all_students() {
 	register_rest_route(
 		'students',
@@ -11,10 +12,21 @@ function register_route_to_get_all_students() {
 		)
 	);
 }
+add_action('rest_api_init', 'register_route_to_get_all_students');
+
+/**
+ * Callback function to get all the active students and return them
+ * @return int[]|WP_Post[]|null
+ */
 function get_all_students() {
 	$posts = get_posts(array(
-		'post_type' => 'students'
-	));
+		'post_type' => 'students',
+		'meta_key'       => 'active',
+		'meta_query'     => array(
+			'key'     => 'active',
+			'value'   => '1',
+			'compare' => '=',
+	)));
 
 	if (empty($posts)) {
 		return null;
@@ -24,8 +36,9 @@ function get_all_students() {
 }
 
 
-/** Registering rest route to get a student by ID */
-add_action('rest_api_init', 'register_route_to_get_student_by_id');
+/**
+ * Registering rest route to get a student by ID
+ */
 function register_route_to_get_student_by_id() {
 	register_rest_route(
 		'students',
@@ -36,6 +49,11 @@ function register_route_to_get_student_by_id() {
 		)
 	);
 }
+add_action('rest_api_init', 'register_route_to_get_student_by_id');
+
+/**
+ * Callback function to get a student by id and return it
+ */
 function get_student_by_id($params) {
 	$post = get_posts(array(
 		'post_type' => 'students',
@@ -50,8 +68,9 @@ function get_student_by_id($params) {
 }
 
 
-/** Registering rest route to create a new student */
-add_action('rest_api_init', 'register_route_to_create_new_student');
+/**
+ * Registering rest route to create a new student
+ */
 function register_route_to_create_new_student() {
 	register_rest_route(
 		'students',
@@ -65,6 +84,12 @@ function register_route_to_create_new_student() {
 		)
 	);
 }
+add_action('rest_api_init', 'register_route_to_create_new_student');
+
+/**
+ * Callback function to create a new student
+ * Returns messages indicating if the API call was successful or not
+ */
 function create_new_student() {
 	if (isset($_POST['post_title']) && isset($_POST['post_content']) && isset($_POST['post_excerpt'])) {
 		$post = array(
@@ -81,8 +106,9 @@ function create_new_student() {
 	return 'Could not create a new student';
 }
 
-/** Registering rest route to edit student by id */
-add_action('rest_api_init', 'register_route_to_edit_student');
+/**
+ * Registering rest route to edit student by id
+ */
 function register_route_to_edit_student() {
 	register_rest_route(
 		'students',
@@ -96,6 +122,12 @@ function register_route_to_edit_student() {
 		)
 	);
 }
+add_action('rest_api_init', 'register_route_to_edit_student');
+
+/**
+ * Callback function to edit a student by id
+ * Returns a success message if the call was executed
+ */
 function edit_student($params) {
 	if (isset($_POST['post_title']) && isset($_POST['post_content']) && isset($_POST['post_excerpt'])) {
 		$post = array(
@@ -108,12 +140,12 @@ function edit_student($params) {
 		$post_id = wp_insert_post($post);
 		return 'Successfully edited student with ID: ' . $post_id;
 	}
-	return $_POST['post_title'];
 }
 
 
-/** Registers a route to delete a student by id */
-add_action('rest_api_init', 'register_route_to_delete_student');
+/**
+ * Registers a route to delete a student by id
+ */
 function register_route_to_delete_student() {
 	register_rest_route(
 		'students',
@@ -127,6 +159,12 @@ function register_route_to_delete_student() {
 		)
 	);
 }
+add_action('rest_api_init', 'register_route_to_delete_student');
+
+/**
+ * Callback function to delete a student by his id
+ * Returns the student on success
+ */
 function delete_student( $params ) {
 	return wp_delete_post( $params['id'] );
 }

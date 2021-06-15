@@ -1,5 +1,7 @@
 <?php
-/** Adding a shortcut for displaying a student by id */
+/**
+ * Adding a shortcut for displaying a student by id
+ */
 // [student student_id="student-id"]
 function find_student($args) {
 	$query_args = array(

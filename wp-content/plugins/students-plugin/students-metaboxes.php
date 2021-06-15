@@ -1,6 +1,7 @@
 <?php
-/** The following two functions are adding a meta box for CPT "students" about their subjects */
-add_action('add_meta_boxes', 'add_subjects_custom_box');
+/**
+ * Function to add a 'Subjects' meta box to the Students CPT
+ */
 function add_subjects_custom_box() {
 	$screens = ['students'];
 	foreach ($screens as $screen) {
@@ -12,7 +13,13 @@ function add_subjects_custom_box() {
 		);
 	}
 }
+add_action('add_meta_boxes', 'add_subjects_custom_box');
 
+/**
+ * Callback for the add_meta_box function
+ * @param $post
+ * Returns the html of the 'Subjects' meta box
+ */
 function subjects_custom_box_html($post) {
 	$value = '';
 	$subjects = get_post_meta(get_the_ID(), 'subjects');
@@ -21,12 +28,13 @@ function subjects_custom_box_html($post) {
 	}
 	?>
 	<label for="subjects">Subjects:</label>
-	<input type="text" name="subjects" value="<?php echo $value;?>">
+	<input type="text" name="subjects" value="<?php echo sanitize_text_field($value);?>">
 	<?php
 }
 
-/** The following two functions are adding a meta box for CPT "students" about where they live */
-add_action('add_meta_boxes', 'add_lives_in_custom_box');
+/**
+ * Function to add a 'Lives in' metabox to the Students CPT
+ */
 function add_lives_in_custom_box() {
 	$screens = ['students'];
 	foreach ($screens as $screen) {
@@ -38,7 +46,13 @@ function add_lives_in_custom_box() {
 		);
 	}
 }
+add_action('add_meta_boxes', 'add_lives_in_custom_box');
 
+/**
+ * Callback for the add_meta_box function
+ * @param $post
+ * Returns the html of the 'Lives in' meta box
+ */
 function lives_in_custom_box_html($post) {
 	$value = '';
 	$lives_in = get_post_meta(get_the_ID(), 'lives_in');
@@ -47,12 +61,13 @@ function lives_in_custom_box_html($post) {
 	}
 	?>
 	<label for="lives_in">Lives In:</label>
-	<input type="text" name="lives_in" value="<?php echo $value;?>">
+	<input type="text" name="lives_in" value="<?php echo sanitize_text_field($value);?>">
 	<?php
 }
 
-/** The following two functions are adding a meta box for CPT "students" about where their addresses */
-add_action('add_meta_boxes', 'add_address_custom_box');
+/**
+ * Function to add a 'Address' metabox to the Students CPT
+ */
 function add_address_custom_box() {
 	$screens = ['students'];
 	foreach ($screens as $screen) {
@@ -64,7 +79,13 @@ function add_address_custom_box() {
 		);
 	}
 }
+add_action('add_meta_boxes', 'add_address_custom_box');
 
+/**
+ * Callback for the add_meta_box function
+ * @param $post
+ * Returns the html of the 'Address' meta box
+ */
 function address_custom_box_html($post) {
 	$value = '';
 	$address = get_post_meta(get_the_ID(), 'address');
@@ -73,12 +94,13 @@ function address_custom_box_html($post) {
 	}
 	?>
 	<label for="address">Address:</label>
-	<input type="text" name="address" value="<?php echo $value;?>">
+	<input type="text" name="address" value="<?php echo sanitize_text_field($value);?>">
 	<?php
 }
 
-/** The following two functions are adding a meta box for CPT "students" about where their birthday */
-add_action('add_meta_boxes', 'add_birthdate_custom_box');
+/**
+ * Function to add a 'Birth Date' metabox to the Students CPT
+ */
 function add_birthdate_custom_box() {
 	$screens = ['students'];
 	foreach ($screens as $screen) {
@@ -90,7 +112,13 @@ function add_birthdate_custom_box() {
 		);
 	}
 }
+add_action('add_meta_boxes', 'add_birthdate_custom_box');
 
+/**
+ * Callback for the add_meta_box function
+ * @param $post
+ * Returns the html of the 'Birth Date' meta box
+ */
 function birthday_custom_box_html($post) {
 	$value = '';
 	$birthday = get_post_meta(get_the_ID(), 'birthday');
@@ -103,8 +131,9 @@ function birthday_custom_box_html($post) {
 	<?php
 }
 
-/** The following two functions are adding a meta box for CPT "students" about where their grade */
-add_action('add_meta_boxes', 'add_grade_custom_box');
+/**
+ * Function to add a 'Grade' metabox to the Students CPT
+ */
 function add_grade_custom_box() {
 	$screens = ['students'];
 	foreach ($screens as $screen) {
@@ -116,7 +145,13 @@ function add_grade_custom_box() {
 		);
 	}
 }
+add_action('add_meta_boxes', 'add_grade_custom_box');
 
+/**
+ * Callback for the add_meta_box function
+ * @param $post
+ * Returns the html of the 'Grade' meta box
+ */
 function grade_custom_box_html($post) {
 	$value = '';
 	$grade = get_post_meta(get_the_ID(), 'grade');
@@ -125,12 +160,13 @@ function grade_custom_box_html($post) {
 	}
 	?>
 	<label for="grade">Grade:</label>
-	<input type="text" name="grade" value="<?php echo intval($value);?>">
+	<input type="text" name="grade" value="<?php echo intval(sanitize_text_field($value));?>">
     <?php
 }
 
-/** The following two functions are adding a meta box for CPT "students" about where their activity status */
-add_action('add_meta_boxes', 'add_activity_custom_box');
+/**
+ * Function to add a 'Active' metabox to the Students CPT
+ */
 function add_activity_custom_box() {
 	$screens = ['students'];
 	foreach ($screens as $screen) {
@@ -142,7 +178,13 @@ function add_activity_custom_box() {
 		);
 	}
 }
+add_action('add_meta_boxes', 'add_activity_custom_box');
 
+/**
+ * Callback for the add_meta_box function
+ * @param $post
+ * Returns the html of the 'Active' meta box
+ */
 function activity_custom_box_html($post) {
 	$value = get_post_meta(get_the_ID(), 'active')[0];
 	?>
@@ -152,7 +194,11 @@ function activity_custom_box_html($post) {
 }
 
 
-/** Saves the "Subjects" data in the DB */
+/**
+ * Saving the subjects of the student
+ *
+ * @param (int) $post_id
+ */
 add_action('post_updated', 'subjects_save_postdata');
 function subjects_save_postdata($post_id) {
 	update_post_meta(
@@ -162,7 +208,11 @@ function subjects_save_postdata($post_id) {
 	);
 }
 
-/** Saves the "Lives In" data in the DB */
+/**
+ * Saving the city and country of the student
+ *
+ * @param (int) $post_id
+ */
 add_action('post_updated', 'lives_in_save_postdata');
 function lives_in_save_postdata($post_id) {
 	update_post_meta(
@@ -172,7 +222,11 @@ function lives_in_save_postdata($post_id) {
 	);
 }
 
-/** Saves the "Address" data in the DB */
+/**
+ * Saving the address of the student
+ *
+ * @param (int) $post_id
+ */
 add_action('post_updated', 'address_save_postdata');
 function address_save_postdata($post_id) {
 	update_post_meta(
@@ -182,31 +236,37 @@ function address_save_postdata($post_id) {
 	);
 }
 
-/** Saves the "Birth Date" data in the DB */
+/**
+ * Saving the birth date of the student
+ *
+ * @param (int) $post_id
+ */
 add_action('post_updated', 'birthday_save_postdata');
 function birthday_save_postdata($post_id) {
 	update_post_meta(
 		$post_id,
 		'birthday',
-		$_POST['birthday']
+		($_POST['birthday'])
 	);
 }
 
-/** Saves the "Grade" data in the DB */
+/**
+ * Saving the grade of the student
+ *
+ * @param (int) $post_id
+ */
 add_action('post_updated', 'grade_save_postdata');
 function grade_save_postdata($post_id) {
 	update_post_meta(
 		$post_id,
 		'grade',
-		$_POST['grade']
+		sanitize_text_field($_POST['grade'])
 	);
 }
 
-/** Saves the "Active" data in the DB */
-add_action('post_updated', 'activity_save_postdata');
 
 /**
- * saving the activity of the student
+ * Saving the activity of the student
  *
  * @param (int) $post_id
  */
@@ -220,4 +280,5 @@ function activity_save_postdata($post_id) {
 		$_POST['active']
 	);
 }
+add_action('post_updated', 'activity_save_postdata');
 

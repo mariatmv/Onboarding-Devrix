@@ -1,6 +1,7 @@
 <?php
-/** Register custom sidebar */
-add_action( 'widgets_init', 'register_students_sidebar' );
+/**
+ * Function to register a custom sidebar called 'Students'
+ */
 function register_students_sidebar() {
 	register_sidebar( array(
 		'name'          => __( 'Students Sidebar', 'twentytwentyone' ),
@@ -11,9 +12,11 @@ function register_students_sidebar() {
 		'after_title'   => '</h3>',
 	) );
 }
+add_action( 'widgets_init', 'register_students_sidebar' );
 
-add_filter( 'the_content', 'display_students_sidebar' );
-
+/**
+ * Function to display the Students sidebar
+ */
 function display_students_sidebar( $the_content ) {
 	if ( is_active_sidebar( 'students-sidebar' ) ) { ?>
 		<aside class="sidebar">
@@ -23,3 +26,4 @@ function display_students_sidebar( $the_content ) {
 	}
 	return $the_content;
 }
+add_filter( 'the_content', 'display_students_sidebar' );
