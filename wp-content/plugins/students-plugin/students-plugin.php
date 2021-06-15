@@ -11,6 +11,7 @@ include substr(plugin_dir_path(__FILE__), 0, -1).'\\students-active-box.php';
 include substr(plugin_dir_path(__FILE__), 0, -1).'\\students-shortcode.php';
 include substr(plugin_dir_path(__FILE__), 0, -1).'\\students-widget.php';
 include substr(plugin_dir_path(__FILE__), 0, -1).'\\students-sidebar.php';
+include substr(plugin_dir_path(__FILE__), 0, -1).'\\students-block\students-block.php';
 
 
 /**

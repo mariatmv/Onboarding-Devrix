@@ -9,6 +9,9 @@ class students_widget extends WP_Widget {
 		);
 	}
 
+	/**
+     * Widget front-end
+     */
 	public function widget( $args, $instance ) {
 		$title = apply_filters( 'widget_title', $instance['title'] );
 
@@ -46,7 +49,14 @@ class students_widget extends WP_Widget {
 
 		echo $args['after_widget'];
 	}
-	// Widget Backend
+
+	/**
+     * Widget back-end
+     *
+	 * @param array $instance
+	 *
+	 * @return string|void
+	 */
 	public function form( $instance ) {
 		if ( isset( $instance[ 'title' ] ) ) {
 			$title = $instance[ 'title' ];
@@ -58,7 +68,9 @@ class students_widget extends WP_Widget {
 		?>
         <p>
             <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
-            <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+            <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>"
+                   name="<?php echo $this->get_field_name( 'title' ); ?>" type="text"
+                   value="<?php echo esc_attr( $title ); ?>" />
         </p>
 		<?php
 
@@ -66,7 +78,9 @@ class students_widget extends WP_Widget {
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'posts_per_page'); ?>">Posts per page:</label>
-			<input class="tiny-text" id="<?php echo $this->get_field_id( 'posts_per_page' ); ?>" name="<?php echo $this->get_field_name( 'posts_per_page' ); ?>" type="number" value="<?php echo $posts_per_page; ?>">
+			<input class="tiny-text" id="<?php echo $this->get_field_id( 'posts_per_page' ); ?>"
+                   name="<?php echo $this->get_field_name( 'posts_per_page' ); ?>" type="number"
+                   value="<?php echo $posts_per_page; ?>">
 		</p>
 		<?php
 
@@ -75,16 +89,27 @@ class students_widget extends WP_Widget {
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'status' ); ?>">Status:</label>
-			<select id="<?php echo $this->get_field_id( 'status' ); ?>" name="<?php echo $this->get_field_name( 'status' ); ?>">
+			<select id="<?php echo $this->get_field_id( 'status' ); ?>"
+                    name="<?php echo $this->get_field_name( 'status' ); ?>">
+
 				<option value="active" <?php echo ( 'active' === $status ) ? 'selected' : ''; ?>>Active</option>
 				<option value="inactive" <?php echo ( 'inactive' === $status ) ? 'selected' : ''; ?>>Inactive</option>
+
 			</select>
 		</p>
 		<?php
 
 }
 
-// Updating widget replacing old instances with new
+	/**
+     * Updating widget
+     * Replacing old instances with new ones
+     *
+	 * @param array $new_instance
+	 * @param array $old_instance
+	 *
+	 * @return array
+	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
@@ -94,10 +119,12 @@ class students_widget extends WP_Widget {
 		return $instance;
 	}
 
-// Class wpb_widget ends here
 }
 
-add_action( 'widgets_init', 'wpb_load_students_widget' );
+/**
+ * Registers the Students widget
+ */
 function wpb_load_students_widget() {
 	register_widget( 'students_widget' );
 }
+add_action( 'widgets_init', 'wpb_load_students_widget' );
