@@ -24,7 +24,7 @@ class students_widget extends WP_Widget {
 		$args = array(
 			'post_type' => 'students',
 			'posts_per_page' => $posts_per_page,
-			'paged' => ( get_query_var('paged') ? get_query_var('paged') : 1),
+			//'paged' => ( get_query_var('paged') ? get_query_var('paged') : 1),
 			'meta_key'       => 'active',
 			'meta_query'     => array(
 				'key'     => 'active',
@@ -46,7 +46,7 @@ class students_widget extends WP_Widget {
 			</ul>
 		<?php
 		endif;
-
+        wp_reset_query();
 		echo $args['after_widget'];
 	}
 

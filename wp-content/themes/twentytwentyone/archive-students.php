@@ -1,11 +1,12 @@
 <?php
 get_header(); ?>
 <?php
-$posts_per_page = 10;
+$posts_per_page = 4;
+$paged = ( get_query_var('paged') ? get_query_var('paged') : 1);
 $args = array(
 	'post_type' => 'students',
 	'posts_per_page' => $posts_per_page,
-	'paged' => ( get_query_var('paged') ? get_query_var('paged') : 1),
+	'paged' => $paged,
 	'meta_key'       => 'active',
 	'meta_query'     => array(
 		'key'     => 'active',
@@ -29,8 +30,17 @@ if ( $the_query->have_posts() ) :
     endwhile;
 	?>
 	<?php
-        echo paginate_links();
+	$big = 999999999; // need an unlikely integer
+
+	echo paginate_links( array(
+		'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+		'format' => '?paged=%#%',
+		'current' => max( 1, get_query_var('paged') ),
+		'total' => $the_query->max_num_pages
+	) );
 	?>
 <?php endif; ?>
-<?php get_sidebar('Students Sidebar') ?>
+
+<?php    wp_reset_query(); ?>
+
 <?php get_footer() ?>
