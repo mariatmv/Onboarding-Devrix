@@ -17,13 +17,12 @@ add_action( 'widgets_init', 'register_students_sidebar' );
 /**
  * Function to display the Students sidebar
  */
-function display_students_sidebar( $the_content ) {
+function display_students_sidebar(  ) {
 	if ( is_active_sidebar( 'students-sidebar' ) ) { ?>
 		<aside class="sidebar">
 			<?php dynamic_sidebar( 'students-sidebar' ); ?>
 		</aside>
 		<?php
 	}
-	return $the_content;
 }
-add_filter( 'the_content', 'display_students_sidebar' );
+add_filter( 'get_footer', 'display_students_sidebar' );
