@@ -8,7 +8,8 @@ function register_route_to_get_all_students() {
 		'/all',
 		array(
 			'methods' => 'GET',
-			'callback' => 'get_all_students'
+			'callback' => 'get_all_students',
+			'permission_callback' => '__return_true'
 		)
 	);
 }
@@ -45,7 +46,8 @@ function register_route_to_get_student_by_id() {
 		'/id=(?P<id>[\d]+)',
 		array(
 			'methods' => 'GET',
-			'callback' => 'get_student_by_id'
+			'callback' => 'get_student_by_id',
+			'permission_callback' => '__return_true'
 		)
 	);
 }
