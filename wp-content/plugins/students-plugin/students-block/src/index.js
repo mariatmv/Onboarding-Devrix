@@ -20,19 +20,24 @@ import './style.scss';
 import Edit from './edit';
 import save from './save';
 
+
 /**
  * Every block starts by registering a new block type definition.
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-registerBlockType( 'create-block/students-block', {
-	/**
-	 * @see ./edit.js
-	 */
-	edit: Edit,
+registerBlockType( 'create-block/students-block',
+	{
+		title: 'Students Block',
+		icon: 'smiley',
+		category: 'widgets',
+		apiVersion: 2,
+		attributes: {
+			status: {type: 'string'},
+			count: {type: 'int'}
+		},
+		edit: Edit,
+		save: () => null,
+	}
+ );
 
-	/**
-	 * @see ./save.js
-	 */
-	save,
-} );

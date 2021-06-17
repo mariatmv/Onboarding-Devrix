@@ -39,7 +39,7 @@ class students_widget extends WP_Widget {
 				<?php
 				while ($query->have_posts()) :
 					$query->the_post(); ?>
-					<li><a href="<?php get_the_permalink(); ?>"><?php the_title() ?></a></li>
+					<li><a href="<?php the_permalink(); ?>"><?php the_title() ?></a></li>
 				<?php
 				endwhile;
 				?>

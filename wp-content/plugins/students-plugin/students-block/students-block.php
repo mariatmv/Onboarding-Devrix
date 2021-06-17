@@ -20,7 +20,64 @@
  *
  * @see https://developer.wordpress.org/block-editor/tutorials/block-tutorial/writing-your-first-block-type/
  */
+
+
+/**
+ * Registers the Students block type and the index.js script
+ */
 function create_block_students_block_block_init() {
-	register_block_type_from_metadata( __DIR__ );
+	$res = wp_register_script('students-block-js',
+		plugins_url('students-block/src/index.js'),
+		array('wp-blocks', 'wp-i18n', 'wp-editor'));
+
+
+	register_block_type_from_metadata( __DIR__,
+		array(
+		'render_callback' => 'render_students_callback',
+
+			));
+
 }
 add_action( 'init', 'create_block_students_block_block_init' );
+
+
+
+/**
+ * Renders the active/inactive students on the front-end
+ */
+function render_students_callback($props) {
+	$status = ($props['status'] == 'active') ? 1 : 0;
+	$posts_per_page = $props['count'];
+	$args = array(
+		'post_type' => 'students',
+		'post_status' => 'publish',
+		'posts_per_page' => $posts_per_page,
+		'meta_key'       => 'active',
+		'meta_query'     => array(
+			'key'     => 'active',
+			'value'   => $status,
+			'compare' => '=',
+		),
+	);
+
+	$the_query = new WP_Query($args);
+
+	ob_start(); ?>
+	<?php if ($the_query->have_posts()) :?>
+		<div>
+			<ul>
+			<?php while ($the_query->have_posts()) : ?>
+				<?php  $the_query->the_post(); ?>
+					<li>
+						<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+					</li>
+			<?php endwhile; ?>
+			</ul>
+		</div>
+	<?php  else:?>
+		<h3>No students found!</h3>
+	<?php endif; ?>
+
+<?php
+	return ob_get_clean();
+}

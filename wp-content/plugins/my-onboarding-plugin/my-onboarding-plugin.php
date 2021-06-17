@@ -9,9 +9,7 @@ class OnboardingPlugin {
 
 	public function __construct() {
 		$this->filters_enabled();
-		add_filter( 'the_content', array($this, 'onboarding_filter_message') );
-		add_filter('the_content', array($this, 'div_insertion'));
-		add_filter('the_content', array($this, 'p_insertion'));
+		add_filter( 'the_excerpt', array($this, 'onboarding_filter_message') );
 		add_filter('wp_nav_menu_items', array($this, 'add_custom_element_in_nav'));
 		add_filter('profile_update', array($this, 'send_email_when_profile_is_updated'));
 		add_action( 'admin_menu', array($this, 'my_onboarding_menu') );
@@ -77,32 +75,11 @@ class OnboardingPlugin {
 	/**
 	 * Adds a message before the content of a post
 	 */
-	function onboarding_filter_message( $the_content) {
+	function onboarding_filter_message( $the_excerpt) {
 		if ( $this->filters_enabled() ) {
-			return 'Onboarding filter: by Maria Tomovich' . '<br>' . $the_content;
+			return 'Onboarding filter: by Maria Tomovich' . '<br>' . $the_excerpt;
 		}
-		return $the_content;
-	}
-
-	/**
-	 * Inserts a div element in the past p element
-	 */
-	function div_insertion($content) {
-		if ( $this->filters_enabled() ) {
-			return preg_replace( '</p>', '/p><div style="display:none">Hello</div', $content, 1 );
-		}
-		return $content;
-	}
-
-
-	/**
-	 * Adds a paragraph element
-	 */
-	function p_insertion($content) {
-		if ( $this->filters_enabled() ) {
-			return preg_replace( '<p>', 'p>This Paragraph was added programmatically.</p><p', $content, 1 );
-		}
-		return $content;
+		return $the_excerpt;
 	}
 
 

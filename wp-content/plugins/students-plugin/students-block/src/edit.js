@@ -29,13 +29,58 @@ import './editor.scss';
  *
  * @return {WPElement} Element to render.
  */
-export default function Edit() {
-	return (
-		<p { ...useBlockProps() }>
-			{ __(
-				'Students Block – hello from the editor!',
-				'students-block'
-			) }
-		</p>
+
+import { TextControl } from '@wordpress/components';
+
+
+export default function Edit(props) {
+	function updateStatus(event) {
+		props.setAttributes({status: event.target.value})
+	}
+
+	function updateCount(event) {
+		props.setAttributes({count: event.target.value})
+	}
+
+	return wp.element.createElement(
+		"div",
+		null,
+		wp.element.createElement(
+			"label",
+			{
+				for: "status"
+			},
+			"Status:"
+		),
+		wp.element.createElement(
+			"select",
+			{
+				name: "status",
+				onChange: updateStatus
+			},
+			wp.element.createElement(
+				"option",
+				{
+					value: "active"
+				},
+				"Active"
+			),
+			wp.element.createElement(
+				"option",
+				{
+					value: "inactive"
+				},
+				"Inactive"
+			)
+		),
+		wp.element.createElement("label", {
+			for: "count"
+		}, "Count:"),
+		wp.element.createElement("input", {
+			type: "text",
+			name: "count",
+			value: props.attributes.count,
+			onChange: updateCount
+		})
 	);
 }

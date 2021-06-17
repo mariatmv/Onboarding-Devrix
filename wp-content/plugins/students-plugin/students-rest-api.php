@@ -2,24 +2,24 @@
 /**
  * Registering rest route to get all the students
  */
-function register_route_to_get_all_students() {
+function register_route_to_get_all_active_students() {
 	register_rest_route(
 		'students',
-		'/all',
+		'/active',
 		array(
 			'methods' => 'GET',
-			'callback' => 'get_all_students',
+			'callback' => 'get_all_active_students',
 			'permission_callback' => '__return_true'
 		)
 	);
 }
-add_action('rest_api_init', 'register_route_to_get_all_students');
+add_action('rest_api_init', 'register_route_to_get_all_active_students');
 
 /**
  * Callback function to get all the active students and return them
  * @return int[]|WP_Post[]|null
  */
-function get_all_students() {
+function get_all_active_students() {
 	$posts = get_posts(array(
 		'post_type' => 'students',
 		'meta_key'       => 'active',
@@ -28,6 +28,43 @@ function get_all_students() {
 			'value'   => '1',
 			'compare' => '=',
 	)));
+
+	if (empty($posts)) {
+		return null;
+	}
+
+	return $posts;
+}
+
+/**
+ * Registering rest route to get all inactive
+ */
+function register_route_to_get_all_inactive_students() {
+	register_rest_route(
+		'students',
+		'/inactive',
+		array(
+			'methods' => 'GET',
+			'callback' => 'get_all_inactive_students',
+			'permission_callback' => '__return_true'
+		)
+	);
+}
+add_action('rest_api_init', 'register_route_to_get_all_inactive_students');
+
+/**
+ * Callback function to get all the inactive students and return them
+ * @return int[]|WP_Post[]|null
+ */
+function get_all_inactive_students() {
+	$posts = get_posts(array(
+		'post_type' => 'students',
+		'meta_key'       => 'active',
+		'meta_query'     => array(
+			'key'     => 'active',
+			'value'   => '0',
+			'compare' => '=',
+		)));
 
 	if (empty($posts)) {
 		return null;
