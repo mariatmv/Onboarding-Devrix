@@ -6,14 +6,6 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
- */
-import { useBlockProps } from '@wordpress/block-editor';
-
-/**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
  * Those files can contain any CSS code that gets applied to the editor.
  *
@@ -31,56 +23,55 @@ import './editor.scss';
  */
 
 import { TextControl } from '@wordpress/components';
-
+import { useBlockProps, InspectorControls } from "@wordpress/block-editor";
+import {
+	Panel,
+	PanelBody,
+	PanelRow,
+	RadioControl,
+	__experimentalNumberControl as NumberControl,
+} from "@wordpress/components";
+import "./editor.scss";
+import ServerSideRender from "@wordpress/server-side-render";
 
 export default function Edit(props) {
-	function updateStatus(event) {
-		props.setAttributes({status: event.target.value})
+
+	let updateStatus = (newStatus) => {
+		props.setAttributes({ status: newStatus });
 	}
 
-	function updateCount(event) {
-		props.setAttributes({count: event.target.value})
+	let updateCount = (newCount) => {
+		props.setAttributes({ count: newCount });
 	}
+	console.log(props.attributes.count);
+	return (
+		<div {...useBlockProps()}>
+				<InspectorControls key="setting">
+					<Panel>
+						<PanelBody title="Settings" initialOpen={true}>
+							<PanelRow>
+								<RadioControl
+									label="Status:"
+									onChange={updateStatus}
+									selected={props.attributes.status}
+									options={[
+										{ label: "Active", value: "active" },
+										{ label: "Inactive", value: "inactive" },
+									]}
+								/>
+							</PanelRow>
+							<PanelRow>
+								<NumberControl
+									label="Count:"
+									onChange={updateCount}
+									value={props.attributes.count}
+								/>
+							</PanelRow>
+						</PanelBody>
+					</Panel>
+				</InspectorControls>
 
-	return wp.element.createElement(
-		"div",
-		null,
-		wp.element.createElement(
-			"label",
-			{
-				for: "status"
-			},
-			"Status:"
-		),
-		wp.element.createElement(
-			"select",
-			{
-				name: "status",
-				onChange: updateStatus
-			},
-			wp.element.createElement(
-				"option",
-				{
-					value: "active"
-				},
-				"Active"
-			),
-			wp.element.createElement(
-				"option",
-				{
-					value: "inactive"
-				},
-				"Inactive"
-			)
-		),
-		wp.element.createElement("label", {
-			for: "count"
-		}, "Count:"),
-		wp.element.createElement("input", {
-			type: "text",
-			name: "count",
-			value: props.attributes.count,
-			onChange: updateCount
-		})
+			<ServerSideRender block='create-block/students-block' attributes={props.attributes} />
+		</div>
 	);
 }

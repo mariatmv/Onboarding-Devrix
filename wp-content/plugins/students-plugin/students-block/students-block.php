@@ -31,11 +31,16 @@ function create_block_students_block_block_init() {
 		array('wp-blocks', 'wp-i18n', 'wp-editor'));
 
 
-	register_block_type_from_metadata( __DIR__,
-		array(
-		'render_callback' => 'render_students_callback',
-
-			));
+	register_block_type_from_metadata( __DIR__, array(
+			'render_callback' => 'render_students_callback',
+			'attributes' => array(
+					'status' => array(
+							'type' => 'string',
+					),
+					'count' => array(
+							'type' => 'int',
+					),
+			)));
 
 }
 add_action( 'init', 'create_block_students_block_block_init' );
@@ -74,8 +79,6 @@ function render_students_callback($props) {
 			<?php endwhile; ?>
 			</ul>
 		</div>
-	<?php  else:?>
-		<h3>No students found!</h3>
 	<?php endif; ?>
 
 <?php
